@@ -2,7 +2,8 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-BUCKET="${OCTODOGE_S3_BUCKET:-octodoge.iliaskarim.net}"
+BUCKET="${OCTODOGE_S3_BUCKET:-octodoge.com}"
+DISTRIBUTION_ID="${CLOUDFRONT_DISTRIBUTION_ID:-E39DLYSS5BGSGK}"
 
 if ! command -v aws >/dev/null 2>&1; then
   echo "error: aws CLI is not installed (https://aws.amazon.com/cli/)" >&2
@@ -24,10 +25,10 @@ aws s3 sync ${aws_args+"${aws_args[@]}"} "$ROOT/" "s3://$BUCKET/" \
   --exclude ".DS_Store" \
   --cache-control "public, max-age=300"
 
-if [[ -n "${CLOUDFRONT_DISTRIBUTION_ID:-}" ]]; then
+if [[ -n "$DISTRIBUTION_ID" ]]; then
   echo "Creating CloudFront invalidation for /*"
   aws cloudfront create-invalidation ${aws_args+"${aws_args[@]}"} \
-    --distribution-id "$CLOUDFRONT_DISTRIBUTION_ID" \
+    --distribution-id "$DISTRIBUTION_ID" \
     --paths "/*" \
     --output text \
     --query 'Invalidation.Id'
