@@ -56,10 +56,21 @@ header {
 }
 
 .logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   font-size: 1.125rem;
   font-weight: 700;
+  line-height: 1;
   color: var(--text);
   text-decoration: none;
+}
+
+.logo img {
+  display: block;
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
 }
 
 nav {
