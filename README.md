@@ -1,6 +1,6 @@
 # Octodoge website
 
-Static pages for [octodoge.iliaskarim.net](https://octodoge.iliaskarim.net).
+Static pages for [octodoge.com](https://octodoge.com).
 
 The iOS app lives in [GitHubClient](https://github.com/iliaskarim/GitHubClient). App Store listing copy and screenshots live in [octodoge-metadata](https://github.com/iliaskarim/octodoge-metadata).
 
@@ -21,8 +21,8 @@ From the repo root:
 ```
 
 Requires the [AWS CLI](https://aws.amazon.com/cli/) with credentials that can write to the bucket.
-Override the bucket with `OCTODOGE_S3_BUCKET`, the profile with `AWS_PROFILE`, or invalidate
-CloudFront with `CLOUDFRONT_DISTRIBUTION_ID` after each deploy.
+Defaults to `s3://octodoge.com` and CloudFront distribution `E39DLYSS5BGSGK` (invalidates `/*` after each sync).
+Override with `OCTODOGE_S3_BUCKET`, `CLOUDFRONT_DISTRIBUTION_ID`, or `AWS_PROFILE` if needed.
 
 CloudFront (one-time setup for clean `/privacy/` and `/support/` URLs with an S3 REST origin):
 
@@ -31,10 +31,10 @@ CloudFront (one-time setup for clean `/privacy/` and `/support/` URLs with an S3
    trailing-slash paths). Publish the function to **Live**, then associate it on the default
    behavior.
 
-Ensure the bucket serves **HTTPS** and that these URLs load before submitting to App Store Connect:
+Ensure these URLs load over **HTTPS** before submitting to App Store Connect:
 
-- `https://octodoge.iliaskarim.net`
-- `https://octodoge.iliaskarim.net/support/`
-- `https://octodoge.iliaskarim.net/privacy/`
+- `https://octodoge.com`
+- `https://octodoge.com/support/`
+- `https://octodoge.com/privacy/`
 
 Support and privacy contact email: `ilias.karim@icloud.com`.
