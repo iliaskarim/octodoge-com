@@ -113,6 +113,71 @@ main {
   max-width: 36rem;
 }
 
+.phone-strip {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 0.85rem;
+  width: min(50rem, calc(100vw - 2rem));
+  margin: 2rem 0 0;
+  margin-left: 50%;
+  translate: -50%;
+}
+
+.phone {
+  position: relative;
+  margin: 0;
+  width: min(11rem, calc(50% - 0.5rem));
+  border-radius: 1.65rem;
+  padding: 0.35rem;
+  background: #1c1c1e;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.12),
+    0 1rem 2.5rem rgba(0, 0, 0, 0.12);
+}
+
+.phone::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: 0.72rem;
+  left: 50%;
+  translate: -50% 0;
+  width: 30%;
+  height: 1.05rem;
+  border-radius: 999px;
+  background: #000;
+  pointer-events: none;
+}
+
+@media (min-width: 40rem) {
+  .phone-strip {
+    flex-wrap: nowrap;
+    gap: 0.75rem;
+  }
+
+  .phone {
+    width: min(11.25rem, 23%);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .phone {
+    background: #2c2c2e;
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.08),
+      0 1rem 2.5rem rgba(0, 0, 0, 0.45);
+  }
+}
+
+.phone img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 1.35rem;
+}
+
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
