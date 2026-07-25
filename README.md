@@ -12,6 +12,16 @@ The iOS app lives in [GitHubClient](https://github.com/iliaskarim/GitHubClient).
 | `/support/` | Support URL |
 | `/privacy/` | Privacy Policy URL |
 
+## Local
+
+From the repo root:
+
+```bash
+python3 -m http.server 8765
+```
+
+Then open [http://localhost:8765](http://localhost:8765).
+
 ## Deploy
 
 From the repo root:
