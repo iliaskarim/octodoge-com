@@ -5,6 +5,7 @@
   --text: #1a1a1a;
   --muted: #5c5c5c;
   --accent: #0969da;
+  --doge: #fdca5c;
   --border: #e6e6e6;
   --max-width: 42rem;
 }
@@ -84,9 +85,12 @@ nav a {
   text-decoration: none;
 }
 
-nav a:hover,
-nav a[aria-current="page"] {
+nav a:hover {
   color: var(--accent);
+}
+
+nav a[aria-current="page"] {
+  color: var(--doge);
 }
 
 main {
