@@ -26,8 +26,8 @@
 
 @font-face {
   font-family: "Ageo";
-  src: url("/assets/fonts/Ageo-Bold.woff2") format("woff2");
-  font-weight: 700;
+  src: url("/assets/fonts/Ageo-ExtraBold.woff2") format("woff2");
+  font-weight: 800;
   font-style: normal;
   font-display: swap;
 }
@@ -69,7 +69,7 @@ header {
   gap: 0.5rem;
   font-family: "Ageo", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-size: 1.125rem;
-  font-weight: 700;
+  font-weight: 800;
   line-height: 1;
   letter-spacing: -0.01em;
   color: var(--text);
