@@ -4,7 +4,6 @@
   --surface: #ffffff;
   --text: #1a1a1a;
   --muted: #5c5c5c;
-  --accent: #0969da;
   --doge: #fdca5c;
   --border: #e6e6e6;
   --max-width: 42rem;
@@ -16,7 +15,6 @@
     --surface: #161b22;
     --text: #f0f6fc;
     --muted: #8b949e;
-    --accent: #58a6ff;
     --border: #30363d;
   }
 }
@@ -42,7 +40,7 @@ body {
 }
 
 a {
-  color: var(--accent);
+  color: var(--doge);
 }
 
 a:hover {
