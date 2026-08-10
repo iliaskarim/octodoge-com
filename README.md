@@ -24,6 +24,68 @@ Then open [http://localhost:8765](http://localhost:8765).
 
 ## Deploy
 
+Merges (and pushes) to `main` run [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml), which calls the same upload script used locally. You can also trigger **Deploy** manually from the Actions tab.
+
+### One-time GitHub → AWS setup (OIDC)
+
+1. In IAM, create an identity provider for GitHub OIDC if you do not already have one:
+   - Provider URL: `https://token.actions.githubusercontent.com`
+   - Audience: `sts.amazonaws.com`
+2. Create an IAM role trusted by that provider. Trust policy (adjust account/repo as needed):
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Federated": "arn:aws:iam::ACCOUNT_ID:oidc-provider/token.actions.githubusercontent.com"
+      },
+      "Action": "sts:AssumeRoleWithWebIdentity",
+      "Condition": {
+        "StringEquals": {
+          "token.actions.githubusercontent.com:aud": "sts.amazonaws.com"
+        },
+        "StringLike": {
+          "token.actions.githubusercontent.com:sub": "repo:iliaskarim/octodoge-com:*"
+        }
+      }
+    }
+  ]
+}
+```
+
+3. Attach a policy that allows syncing the site bucket and invalidating CloudFront, for example:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": ["s3:ListBucket"],
+      "Resource": "arn:aws:s3:::octodoge.com"
+    },
+    {
+      "Effect": "Allow",
+      "Action": ["s3:GetObject", "s3:PutObject", "s3:DeleteObject"],
+      "Resource": "arn:aws:s3:::octodoge.com/*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": ["cloudfront:CreateInvalidation"],
+      "Resource": "arn:aws:cloudfront::ACCOUNT_ID:distribution/E39DLYSS5BGSGK"
+    }
+  ]
+}
+```
+
+4. In the GitHub repo, add secret `AWS_ROLE_ARN` with that role’s ARN.
+5. Optional: set repository variable `AWS_REGION` (defaults to `us-east-1`).
+
+### Manual deploy
+
 From the repo root:
 
 ```bash
