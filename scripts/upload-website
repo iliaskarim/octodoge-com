@@ -19,6 +19,7 @@ echo "Syncing $ROOT -> s3://$BUCKET/"
 aws s3 sync ${aws_args+"${aws_args[@]}"} "$ROOT/" "s3://$BUCKET/" \
   --delete \
   --exclude ".git/*" \
+  --exclude ".github/*" \
   --exclude ".gitignore" \
   --exclude "README.md" \
   --exclude "scripts/*" \
