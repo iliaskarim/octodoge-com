@@ -85,7 +85,8 @@ header {
 nav {
   display: flex;
   gap: 1rem;
-  font-size: 0.9375rem;
+  font-size: 1rem;
+  font-weight: 600;
 }
 
 nav a {
@@ -276,11 +277,12 @@ footer {
   margin: 0 auto;
   padding: 0 1.5rem 2rem;
   color: var(--muted);
-  font-size: 0.875rem;
+  font-size: 0.9375rem;
 }
 
 footer nav {
   margin-bottom: 0.75rem;
+  font-weight: 600;
 }
 
 .prose h1 {
