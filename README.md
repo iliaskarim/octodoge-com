@@ -2,7 +2,7 @@
 
 Static pages for [octodoge.com](https://octodoge.com).
 
-The iOS app lives in [GitHubClient](https://github.com/iliaskarim/GitHubClient). App Store listing copy and screenshots live in [octodoge-metadata](https://github.com/iliaskarim/octodoge-metadata).
+The iOS app lives in [GitHubClient](https://github.com/iliaskarim/GitHubClient). App Store listing copy lives in [octodoge-metadata](https://github.com/iliaskarim/octodoge-metadata). Screenshot sources live in [octodoge-screenshots](https://gitlab.com/iliaskarim/octodoge-screenshots).
 
 ## Pages
 
