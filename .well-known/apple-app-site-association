@@ -1,0 +1,22 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": [
+          "H2SLQDK5YK.com.iliaskarim.Octodoge",
+          "H2SLQDK5YK.com.iliaskarim.Octodoge.debug"
+        ],
+        "components": [
+          { "/": "/", "exclude": true, "comment": "Marketing landing" },
+          { "/": "/privacy", "exclude": true },
+          { "/": "/privacy/*", "exclude": true },
+          { "/": "/support", "exclude": true },
+          { "/": "/support/*", "exclude": true },
+          { "/": "/assets/*", "exclude": true },
+          { "/": "/.well-known/*", "exclude": true },
+          { "/": "/*", "comment": "GitHub-shaped paths → Octodoge" }
+        ]
+      }
+    ]
+  }
+}

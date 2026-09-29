@@ -96,17 +96,84 @@ Requires the [AWS CLI](https://aws.amazon.com/cli/) with credentials that can wr
 Defaults to `s3://octodoge.com` and CloudFront distribution `E39DLYSS5BGSGK` (invalidates `/*` after each sync).
 Override with `OCTODOGE_S3_BUCKET`, `CLOUDFRONT_DISTRIBUTION_ID`, or `AWS_PROFILE` if needed.
 
-CloudFront (one-time setup for clean `/privacy/` and `/support/` URLs with an S3 REST origin):
+CloudFront (one-time setup for clean `/privacy/` and `/support/` URLs with an S3 REST origin,
+plus Universal Links):
 
 1. **Default root object:** `index.html` (General → Edit)
-2. **Viewer-request function:** append `/index.html` to paths without a file extension (and to
-   trailing-slash paths). Publish the function to **Live**, then associate it on the default
-   behavior.
+2. **Viewer-request function:** publish to **Live**, then associate it on the default behavior.
+   Requirements (see sample below):
+   - Leave `/.well-known/*` untouched — the AASA file has no extension, so the old
+     “append `/index.html`” rewrite would break Universal Links.
+   - Keep marketing paths on octodoge.com (`/`, `/privacy*`, `/support*`, `/assets/*`, and
+     root static files).
+   - For other paths (GitHub-shaped), **302** to `https://github.com{path}` so browsers without
+     the app land on GitHub. Installed-app Universal Links open Octodoge before this runs.
+   - Still append `/index.html` for trailing-slash / extensionless **site** paths.
+
+Sample CloudFront Function (`cloudfront-js-2.0`):
+
+```javascript
+function handler(event) {
+  var request = event.request;
+  var uri = request.uri;
+
+  if (uri === '/.well-known' || uri.indexOf('/.well-known/') === 0) {
+    return request;
+  }
+
+  var isSite =
+    uri === '/' ||
+    uri === '/index.html' ||
+    uri === '/styles.css' ||
+    uri === '/robots.txt' ||
+    uri === '/sitemap.xml' ||
+    uri === '/privacy' ||
+    uri.indexOf('/privacy/') === 0 ||
+    uri === '/support' ||
+    uri.indexOf('/support/') === 0 ||
+    uri.indexOf('/assets/') === 0;
+
+  if (!isSite) {
+    return {
+      statusCode: 302,
+      statusDescription: 'Found',
+      headers: {
+        location: { value: 'https://github.com' + uri },
+      },
+    };
+  }
+
+  if (uri.endsWith('/')) {
+    request.uri = uri + 'index.html';
+  } else if (uri.indexOf('.') === -1) {
+    request.uri = uri + '/index.html';
+  }
+  return request;
+}
+```
+
+### Universal Links
+
+`/.well-known/apple-app-site-association` claims GitHub-shaped paths for the Octodoge iOS apps
+and excludes marketing / static / well-known paths. Deploy sets `Content-Type: application/json`
+(required; no file extension). After deploy + CloudFront function update, verify:
+
+```bash
+curl -sI https://octodoge.com/.well-known/apple-app-site-association
+# Expect: 200, content-type: application/json, no redirect
+
+curl -sI https://octodoge.com/iliaskarim/GitHubClient
+# Expect: 302 Location: https://github.com/iliaskarim/GitHubClient
+```
+
+Associated Domains in the app: `applinks:octodoge.com`, `applinks:www.octodoge.com`
+(see [OCT-238](https://linear.app/octodoge/issue/OCT-238) / GitHubClient).
 
 Ensure these URLs load over **HTTPS** before submitting to App Store Connect:
 
 - `https://octodoge.com`
 - `https://octodoge.com/support/`
 - `https://octodoge.com/privacy/`
+- `https://octodoge.com/.well-known/apple-app-site-association`
 
 Support and privacy contact email: `ilias.karim@icloud.com`.
