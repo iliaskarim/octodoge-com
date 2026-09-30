@@ -4,6 +4,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 BUCKET="${OCTODOGE_S3_BUCKET:-octodoge.com}"
 DISTRIBUTION_ID="${CLOUDFRONT_DISTRIBUTION_ID:-E39DLYSS5BGSGK}"
+AASA=".well-known/apple-app-site-association"
 
 if ! command -v aws >/dev/null 2>&1; then
   echo "error: aws CLI is not installed (https://aws.amazon.com/cli/)" >&2
@@ -24,6 +25,14 @@ aws s3 sync ${aws_args+"${aws_args[@]}"} "$ROOT/" "s3://$BUCKET/" \
   --exclude "README.md" \
   --exclude "scripts/*" \
   --exclude ".DS_Store" \
+  --exclude "$AASA" \
+  --cache-control "public, max-age=300"
+
+# Apple requires application/json and no file extension. S3 sync would guess
+# octet-stream for an extensionless object, so upload this key explicitly.
+echo "Uploading $AASA with Content-Type application/json"
+aws s3 cp ${aws_args+"${aws_args[@]}"} "$ROOT/$AASA" "s3://$BUCKET/$AASA" \
+  --content-type "application/json" \
   --cache-control "public, max-age=300"
 
 if [[ -n "$DISTRIBUTION_ID" ]]; then
